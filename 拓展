@@ -1,0 +1,862 @@
+// 555.cpp : Defines the entry point for the console application.
+
+//
+
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "windows.h"
+#include "conio.h"
+#include "time.h"
+
+void Init();//*****初始化******
+void welcome();//*****显示登陆界面*****
+void Login();//*****登陆*****
+void Display();//*****显示菜单项*****
+void Out();//*****取款******
+void Query();//*****查询余额******
+void ChangePwd();//*****修改密码******
+void Transfer();//*****转账******
+void Quit();//*****退出******
+
+
+struct student
+{
+	
+	char name[20];
+	int id;
+	char pw[20];
+	float money;
+}stu[6];
+int pos;
+
+
+void main()
+{
+	Init();	//*****初始化*****
+	//system("color F0");
+
+	system("pause");
+
+	system("cls");
+	welcome();//*****显示登陆界面*****	
+	Login();//*****登陆*****
+	system("cls");
+	Display();//*****显示菜单项*****
+
+}
+	
+
+//*****初始化*****
+void Init()
+{
+printf("\n############################################\n");
+printf("#      ATM自动取款系统初始化信息如下:      #\n");
+printf("############################################\n");
+	FILE *fp;
+fp=fopen("ATM.txt","r");                                    //路径
+int i;
+for(i=0;i<6;i++)
+	{
+	fscanf(fp,"%s%d%s%f",stu[i].name,&stu[i].id,stu[i].pw,&stu[i].money);
+	
+	}
+for(i=0;i<6;i++)
+	{
+	printf("%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+	}	
+}
+
+
+//*****显示登陆界面*****
+void welcome()
+{
+	printf("\n############################################\n");
+	printf("#	  欢迎使用ATM自动取款系统	   #\n");
+	printf("#   请先登陆，输入账号密码，回车键结束...  #\n");
+	printf("############################################\n");
+}
+
+//*****登陆*****
+void Login()
+{
+int id;
+char  pw[7];
+	printf("\t\t账号:");
+	scanf("%d",&id);
+	printf("\t\t密码:");
+	for(int p=0;p<6;p++)
+	{
+	pw[p]=getch();
+	printf("*");
+	}
+	pw[p]='\0';
+	printf("\n");
+	//printf("\n%s",pw);
+	int i;
+	int n=3;
+	for(i=0;i<6;i++)
+	{
+	if(id==stu[i].id&&strcmp(pw,stu[i].pw)==0)
+		{
+
+	printf("\n\t\t★登陆成功!★\n");
+	printf("\n");
+	pos=i;
+
+	system("pause");
+	break;
+		}
+	if(i==5)
+		{
+		i=-1;
+		n--;
+		if(n==0)
+			{
+			printf("   没有输入的机会，你的账户将会冻结24小时!\n");
+		while(1)
+		{
+			system("pause");
+		}
+			}
+		printf("\n\t     账号或密码错误\n\t     (温馨提示:剩余%d次输入机会)\n\t     请重新输入账号或密码...\n",n);
+		system("pause");
+		system("cls");
+		 welcome();
+		printf("\t\t账号:");
+		scanf("%d",&id);
+		printf("\t\t密码:");
+		for(int q=0;q<6;q++)
+		{
+		pw[q]=getch();
+		printf("*");
+		}
+		pw[q]='\0';
+		printf("\n");
+		}
+	}
+
+}
+
+//*****显示菜单项*****
+void Display()
+{
+printf("\n###############################################################################\n");
+printf("\n▓                                *欢迎使用*                                  ▓\n");
+printf("\n###############################################################################\n");
+printf("\n      	   ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆        \n");
+printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+printf("          |◆|******|◆|      ☆存(取)款     请按1       |◆|******|◆|\n");
+printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+printf("          |◆|******|◆|      ☆查询余额     请按2       |◆|******|◆|\n");
+printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+printf("          |◆|******|◆|      ☆修改密码     请按3       |◆|******|◆|\n");
+printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+printf("          |◆|******|◆|      ☆转账         请按4       |◆|******|◆|\n");
+printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+printf("          |◆|******|◆|      ☆退出         请按5       |◆|******|◆|\n");
+printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+printf("      	   ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆        \n");
+printf("\n###############################################################################\n");
+printf("\n▓                           **********************                           ▓\n");
+printf("\n###############################################################################\n");
+		int a;
+	printf("请输入你的选择:");
+	scanf("%d",&a);
+	system("cls");
+
+switch(a)
+	{
+	case 1:{
+		Out();
+		break;
+	   }
+	case 2:{
+		Query();
+		break;
+	   }
+	case 3:{
+		ChangePwd();
+		break;
+	   }
+	case 4:{
+		Transfer();
+		break;
+	   }
+	case 5:{
+		Quit();
+		break;
+	   }
+}
+
+}
+
+
+//*****取款******
+void Out()
+{
+	printf("\n###############################################################################\n");
+	printf("\n▓                                *存(取)款*                                  ▓\n");
+	printf("\n###############################################################################\n");
+	printf("\n      	  ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆        \n");
+	printf("\n###############################################################################\n");
+    printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+	printf("          |◆|******|◆|      ☆存款         请按1       |◆|******|◆|\n");
+    printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+	printf("          |◆|******|◆|      ☆取款         请按2       |◆|******|◆|\n");
+    printf("          |◆|******|◆|                                 |◆|******|◆|\n");
+	printf("\n          ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆        \n");
+	printf("\n###############################################################################\n");
+	int b;
+	printf("请输入你的选择:");
+	scanf("%d",&b);
+		system("cls");
+	switch(b)
+{
+case 1:{
+	printf("\t||=====================================================||\n");		
+	printf("\t||                     存款金额                        ||\n");		
+	printf("\t||=====================================================||\n");		
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");		
+	printf("\t||         1、50         2、100         3、150         ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||         4、300        5、500         6、1000        ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                   7、自定义金额                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||=====================================================||\n");
+	printf("\t||=====================================================||\n");
+	 int c;
+	printf("请输入你的选择:");
+	scanf("%d",&c);
+		system("cls");
+		switch(c)
+		{
+		
+			case 1:{
+		stu[pos].money+=50;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                                  //路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+
+			case 2:{
+		stu[pos].money+=100;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");								//路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+	
+			case 3:{
+		stu[pos].money+=150;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                                 //路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+
+			case 4:{
+		stu[pos].money+=300;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                               //路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+system("pause");
+		system("cls");
+		Display();
+		break;
+
+				   }
+
+			case 5:{
+		stu[pos].money+=500;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");								//路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+system("pause");
+		system("cls");
+		Display();
+		break;
+				  }
+	  		case 6:{ 
+		stu[pos].money+=1000;
+		FILE *fp;	
+		fp=fopen("ATM.txt","w");		                           	//路径							
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+			case 7:{
+			float n;
+			printf("请输入存款金额:");
+			scanf("%f",&n);
+			if(n>=0)
+			{
+				
+		stu[pos].money+=n;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");									//路径	
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+
+			}
+			else
+			{
+				printf("输入错误!\n");
+			}
+system("pause");
+		system("cls");
+		Display();
+		break;
+
+				   }
+		}
+		break;
+		  
+	   }
+			  
+				
+	
+	
+case 2:{	
+	printf("\t||=====================================================||\n");		
+	printf("\t||                     取款金额                        ||\n");		
+	printf("\t||=====================================================||\n");		
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");		
+	printf("\t||         1、50         2、100         3、150         ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||         4、300        5、500         6、1000        ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                   7、自定义金额                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||                                                     ||\n");
+	printf("\t||=====================================================||\n");	
+	printf("\t||=====================================================||\n");
+	printf("请输入你的选择:");		 
+	   int c;
+	scanf("%d",&c);
+		system("cls");
+		switch(c)
+		{
+		
+			case 1:{
+				if(stu[pos].money<50)
+				{
+					printf("你的余额不足!\n");
+		system("pause");
+		system("cls");
+		Display();
+				}
+				else
+				{
+		stu[pos].money-=50;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                                	//路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+				}
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+
+			case 2:{
+			if(stu[pos].money<100)
+				{
+					printf("你的余额不足!\n");
+system("pause");
+		system("cls");
+		Display();
+				}
+				else
+				{
+		stu[pos].money-=100;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                                    	//路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+
+				}
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+	
+			case 3:{
+			if(stu[pos].money<150)
+				{
+					printf("你的余额不足!\n");
+system("pause");
+		system("cls");
+		Display();
+				}
+				else
+				{
+		stu[pos].money-=150;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                                    	//路径  
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+				}
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+
+			case 4:{
+			if(stu[pos].money<300)
+				{
+					printf("你的余额不足!\n");
+system("pause");
+		system("cls");
+		Display();
+				}
+				else
+				{
+		stu[pos].money-=300;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                                     	//路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+				}
+system("pause");
+		system("cls");
+		Display();
+		break;
+
+				   }
+
+			case 5:{
+			if(stu[pos].money<500)
+				{
+					printf("你的余额不足!\n");
+system("pause");
+		system("cls");
+		Display();
+				}
+				else
+				{
+		stu[pos].money-=500;
+		FILE *fp;
+		fp=fopen("C:\\Users\\briten\\Desktop\\ATM.txt","w");                                    
+		int i;	//路径
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+				}
+system("pause");
+		system("cls");
+		Display();
+		break;
+				  }
+	  		case 6:{ 
+				if(stu[pos].money<1000)
+				{
+					printf("你的余额不足!\n");
+system("pause");
+		system("cls");
+		Display();
+				}
+				else
+				{
+		stu[pos].money-=1000;
+		FILE *fp;	
+		fp=fopen("ATM.txt","w");                                      	//路径                                
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+				}
+system("pause");
+		system("cls");
+		Display();
+		break;
+				   }
+		
+			case 7:{
+			float n;
+			printf("请输入取款金额:");
+			scanf("%f",&n);	
+			if(n>=0)
+			{
+				
+			
+			if(stu[pos].money<n)
+				{
+					printf("你的余额不足!\n");
+system("pause");
+		system("cls");
+		Display();
+				}
+				else
+				{
+		stu[pos].money-=n;
+		FILE *fp;
+		fp=fopen("ATM.txt","w");                                   	//路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		//printf("%.1f\n",stu[pos].money);
+		fclose(fp);
+				}
+
+			}
+			else
+			{
+				printf("输入错误!\n");
+			}
+system("pause");
+		system("cls");
+		Display();
+		break;
+				  
+				   
+				   }
+
+			}
+		break;
+	   }
+
+	   
+	   
+	   
+}
+}
+
+
+
+void Query()
+{
+printf("\n###############################################################################\n");
+printf("||                                *查询余额*                                 ||");
+printf("\n###############################################################################\n");
+	printf("用户名:%s\t       账号:%d\t      密码:%s\t      余额:%.1f\n",stu[pos].name,stu[pos].id,stu[pos].pw,stu[pos].money);
+		system("pause");
+		system("cls");
+		Display();
+}
+
+
+void ChangePwd()
+{
+	while(1)
+	{
+printf("\n###############################################################################\n");
+printf("||                                *更改密码*                                 ||");
+printf("\n###############################################################################\n");
+	char mima[20];
+	char mi[20];
+	char ma[20];
+printf("\t\t\t    请输入原密码:");
+scanf("%s",mima);
+if(strcmp(stu[pos].pw,mima)==0)
+{
+	
+
+printf("\t\t\t    请输入新密码:");
+//scanf("%s",mi);
+for(int q=0;q<6;q++)
+		{
+		mi[q]=getch();
+		printf("*");
+		}
+		mi[q]='\0';
+		printf("\n");	
+printf("\t\t            再确认新密码:");
+//scanf("%s",ma);
+for(int r=0;r<6;r++)
+		{
+		ma[r]=getch();
+		printf("*");
+		}
+		ma[r]='\0';
+		printf("\n");	
+if(strcmp(stu[pos].pw,mima)==0&&strcmp(mi,ma)==0)
+{
+	int j;
+	for(j=0;j<6;j++)
+	{
+	
+	stu[pos].pw[j]=ma[j];
+	
+	}
+	
+FILE *fp;
+		fp=fopen("ATM.txt","w");                                  	//路径
+		int i;
+		for(i=0;i<6;i++)
+		{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[i].name,stu[i].id,stu[i].pw,stu[i].money);
+		
+		}
+		fclose(fp);
+
+
+		int a;
+		srand((unsigned)time(NULL));
+		a=rand()%10000+999;
+		printf("\t\t\t\t      ------\n");
+		printf("\t\t\t       验证码:|%d| \n",a);
+		printf("\t\t\t\t      ------\n");
+		int b;
+		printf("\t\t\t     请输入验证码:");
+		scanf("%d",&b);
+		
+		if((int)a==b)
+		{	
+			printf("\n");
+printf("\t\t\t     ★更改密码成功★!\n");
+	printf("\n");
+	system("pause");
+		system("cls");
+		}
+else
+{
+printf("\n\t\t\t\t验证码错误!\n");
+	system("pause");
+		system("cls");
+ChangePwd();
+}
+
+		Display();
+	break;
+}
+else
+{
+printf("\t\t\t  ★2次新密码输入不一致!★\n");
+system("pause");
+system("cls");
+}
+
+
+}
+else
+{
+	printf("\t\t\t   ★原始密码输入错误!★\n");
+system("pause");
+system("cls");
+}
+	}
+}
+
+
+
+void Transfer()
+{
+printf("\n###############################################################################\n");
+printf("||                                 *转账*                                    ||");
+printf("\n###############################################################################\n");
+	int zh;
+printf("\t\t         请输入要被转账账号:");
+scanf("%d",&zh);
+for(int i=0;i<6;i++)
+{
+  
+if(zh!=stu[pos].id)	
+{
+
+
+
+	if(zh==stu[i].id)
+ 	{
+  printf("\t\t         请输入转账金额:");
+  float zz;
+  scanf("%f",&zz);
+  if(zz>=0&&zz<=stu[pos].money)
+	{
+  //printf("%.1f %.1f %.1f",zz,stu[pos].money,stu[i].money);
+
+  char mz[20];
+  printf("\t\t         请确认被转账者名字:");
+  scanf("%s",&mz);
+  //printf("%s %s\n",mz,stu[i].name);
+	int a;
+		srand((unsigned)time(NULL));
+		a=rand()%10000+999;
+		printf("\t\t\t\t   ------\n");
+		printf("\t\t\t    验证码:|%d| \n",a);
+		printf("\t\t\t\t   ------\n");
+		int b;
+		printf("\t\t\t  请输入验证码:");
+		scanf("%d",&b);
+		
+		
+		
+
+  if((int)a==b&&strcmp(mz,stu[i].name)==0)
+			{
+	stu[pos].money-=zz;
+	stu[i].money+=zz;
+	FILE *fp;
+	fp=fopen("ATM.txt","w");                                  	//路径
+		int j;
+		for(j=0;j<6;j++)
+				{
+		fprintf(fp,"%s\t %d\t%s\t %.1f\n",stu[j].name,stu[j].id,stu[j].pw,stu[j].money);
+			
+				}
+		
+		fclose(fp);
+		printf("\n\t\t\t     转账成功!\n");
+		system("pause");
+		system("cls");
+		Display();
+			}
+		else 
+		{
+  printf("\n\t\t      账号与名字不匹配或验证码错误!\n");
+  system("pause");
+  system("cls");
+  Transfer();
+		}
+
+
+		}
+
+
+
+		
+  else
+  {
+	  
+printf("\n\t\t\t         无效金额!\n");
+system("pause");
+		system("cls");
+Transfer();
+
+  }
+
+	break;
+	}
+
+
+
+}
+else
+{
+
+printf("\n\t\t\t         无效账号!\n");
+system("pause");
+		system("cls");
+Transfer();
+}
+
+}//循环
+
+
+
+}
+
+
+
+
+void Quit()
+{
+main();
+
+}
